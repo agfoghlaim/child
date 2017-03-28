@@ -22,13 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$adults=$_POST['no_adults'];
 	$children =$_POST['no_children'];
 	$arrival=$_POST['arrival'];
-
-	
-	
+	$created = now();
 
 	if(!empty($fn) && !empty($ln) && !empty($em))  {
-		$q = "INSERT INTO guests(fname,lname, email, address, country, phone, postcode, no_adults, no_CHILDREN, arrival) 
-			  VALUES ('$fn', '$ln', '$em', '$ad', '$country', '$phone', '$postcode', '$adults', '$children', '$arrival')";
+		$q = "INSERT INTO guests(fname,lname, email, address, country, phone, postcode, no_adults, no_CHILDREN, arrival, created) 
+			  VALUES ('$fn', '$ln', '$em', '$ad', '$country', '$phone', '$postcode', '$adults', '$children', '$arrival', '$created')";
 		//$r = @mysqli_query ($dbc, $q);
 
 		$r = $seconddb->query($q);

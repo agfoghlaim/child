@@ -134,11 +134,29 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 					if(!empty($fn) && !empty($ln) && !empty($em))  {
 						$q = "INSERT INTO guests(fname,lname, email, address, country, phone, postcode, no_adults, no_CHILDREN, arrival) 
 							  VALUES ('$fn', '$ln', '$em', '$ad', '$country', '$phone', '$postcode', '$adults', '$children', '$arrival')";
-					
+							  	printf ("New Record has id %d.\n", $seconddb->insert_id);
+						//$last = "SELECT LAST_INSERT_ID();";
+
+				     print_r($q);
+
+				
+					//$book = "INSERT INTO bookings(guestID,booking_date, checkout)
+    				//VALUES(LAST_INSERT_ID(),'$in', '$out'); ";
+						
+						//$lastid = $seconddb->last_insert_id;
+
+						
+					//$x = "SELECT mysql_insert_id('$book')";
+				
 					$r = $seconddb->query($q);
+					//$what = $seconddb->query($x);
+					//echo "<h1>last id is " . $what . "</h1>";
+					//$book_query = $seconddb->query($book);
+					//$lastid = $seconddb->query($last);
+					 // echo '<h1> last id is: ' . $lastid . '</h1>';
 						//check the query ran ok
 						if ($r) {
-							
+						printf ("New Record has id %d.\n", $seconddb->insert_id);	
 							echo '<h1>Thank you!</h1>
 							<p>Guest in the db!</p><p><br /></p>';	
 						} 
@@ -146,7 +164,10 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 						else  { // If it did not run OK.
 							echo '
 							<p class="error">You could not be registered due to a system error. We apologize for any inconvenience.</p>'; 
-						}		
+						}
+						if($book_query){
+							echo "ok";
+						}else{echo "no to booking";}		
 					} 
 	
 
