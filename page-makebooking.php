@@ -11,9 +11,6 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 // Check for form submission:
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
- 
-	//perform validation ensuring all form fields contain values
-	//Note that password should match confirm password.
 
 	$fn=$_POST['fname'];
 	$ln=$_POST['lname'];
@@ -30,47 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 
 	if(!empty($fn) && !empty($ln) && !empty($em))  {
-	$q = "INSERT INTO guests(fname,lname, email, address, country, phone, postcode, no_adults, no_CHILDREN, arrival) 
-		  VALUES ('$fn', '$ln', '$em', '$ad', '$country', '$phone', '$postcode', '$adults', '$children', '$arrival')";
-	//$r = @mysqli_query ($dbc, $q);
+		$q = "INSERT INTO guests(fname,lname, email, address, country, phone, postcode, no_adults, no_CHILDREN, arrival) 
+			  VALUES ('$fn', '$ln', '$em', '$ad', '$country', '$phone', '$postcode', '$adults', '$children', '$arrival')";
+		//$r = @mysqli_query ($dbc, $q);
 
-	$r = $seconddb->query($q);
-	
-	
-	//ebuild your insert query and run it to add the details captured on the form to the users table:
-	//For example:
-	//$fn=$_POST['first_name'];
-	//$ln=$_POST['last_name'];
-	//$un=$_POST['username'];
-	//$pass1=$_POST['pass1'];
-	//$q = "INSERT INTO users (firstname, lastname, username, password) VALUES ('$_POST['first_name']', '$_POST['last_name']', '$_POST['username']', SHA1('$pass1'))";		
-	//$r = @mysqli_query ($dbc, $q); // Run the query. Note: $dbc is set in the mysqli_connect.php script.
-	
-	//Note the password is wrapped in a SHA1 function. This encrypts the password value which will be written to the database. 
-	
-	//check the query ran ok
-	//For example:
-	if ($r) {
-		
-		echo '<h1>Thank you!</h1>
-		<p>Booking made in the db!</p><p><br /></p>';	
-		
-	} 
-
-	else  { // If it did not run OK.
-		echo '
-		<p class="error">You could not be registered due to a system error. We apologize for any inconvenience.</p>'; 
+		$r = $seconddb->query($q);
+		//check the query ran ok
+		if ($r) {
 			
-		 //Debugging message:
+			echo '<h1>Thank you!</h1>
+			<p>Booking made in the db!</p><p><br /></p>';	
+		} 
 
-		//echo '<p>' . mysqli_error($dbc) . '<br /><br />Query: ' . $q . '</p>';
-						
-	} }
+		else  { // If it did not run OK.
+			echo '
+			<p class="error">You could not be registered due to a system error. We apologize for any inconvenience.</p>'; 
+				
+		} 
+	}
 		
-	 //Close the database connection - 
-	//mysqli_close($dbc);
 	
-	// Include the footer and quit the script - exit();
 		
 	exit();
 	

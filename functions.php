@@ -12,9 +12,18 @@ function seconddb(){
 	$seconddb = new wpdb('root', '', 'bandb', 'localhost');
 }
 
-add_action('init', 'seconddb')
+add_action('init', 'seconddb');
 
 /*add jquery ui*/
 
 //add_action('wp_enqueue_script' );
+
+ function divi_child_scripts(){
+ 	wp_enqueue_script('js', get_stylesheet_directory_uri() . '/js/js.js');
+ 	wp_enqueue_script('jquery');
+ }
+
+
+
+add_action( 'wp_enqueue_scripts', 'divi_child_scripts');
 ?>
