@@ -60,10 +60,10 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 
 				<?php
 
-				//if (($_POST['submit'] != null)){
+				if (isset($_POST['submit'])){
 					$_SESSION['in'] = $_POST['date'] ;
 					$_SESSION['out'] = $_POST['dateOut'] ;
-				//}
+				}
 
 					$rooms = array('101', '102', '103', '104');
 				    $in = $_SESSION['in'] ;
@@ -122,7 +122,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 													<p>Number of Adults: <input type="number" name="no_adults" max="4" value="<?php if (isset($_POST['no_adults'])) echo $_POST['no_adults']; ?>"  /> </p>
 													<p>Number of Children: <input type="number" name="no_children" max="4" value="<?php if (isset($_POST['no_children'])) echo $_POST['no_children']; ?>"  /> </p>
 													<p>Arrival Time: <input type="time" name="arrival"value="<?php if (isset($_POST['arrival'])) echo $_POST['arrival']; ?>"  /> </p>
-													<p><input type="submit" name="submit" value="Register" /></p>
+													<p><input type="submit"  value="Register" /></p>
 												</form>
 											</div>
 										 </td></tr>
@@ -182,10 +182,10 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 						//printf ("New Record has id %d.\n", $seconddb->insert_id);	
 							echo '<h1>Thank you!</h1>
 							<p>Guest in the db!</p><p><br /></p>';	
-							$marie = $seconddb->insert_id;
+							$guest = $seconddb->insert_id;
 
 							var_dump($_SESSION);
-							echo "<h1>This is marie variable " . $marie . "</h1>";
+							echo "<h1>This is marie variable " . $guest . "</h1>";
 							echo "<h1>" . $_SESSION['in'] . "</h1>";
 							echo "<h1>This is in variable " . $in . "</h1>";
 							echo "<h1>This is out variable " . $out . "</h1>";
@@ -193,8 +193,8 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 					echo  $_SESSION['out'];
 					var_dump($_SESSION);
 							//insert booking 
-							$book_query = "INSERT INTO bookings(guestID,booking_date, checkout)
-    						VALUES('$marie','$in', '$out'); ";
+							$book_query = "INSERT INTO bookings(guestID,booking_date, checkout, rm_no)
+    						VALUES('$guest','$in', '$out', '101'); ";
     						$booking = $seconddb->query($book_query);
     						 //echo "<pre>";
 				     //print_r($booking);
