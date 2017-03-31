@@ -51,6 +51,13 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 					
 					Arrive: <input class="datepicker" type="date" id="arrive" name="arrive">
 					depart: <input class="datepicker" type="date" id="depart" name="depart">
+					Room Type:
+					 	<select id="roomtype">
+						  <option id="single" value="single">Single</option>
+						  <option id="double" value="double">Double</option>
+						  <option id="twin" value="twin">Twin</option>
+						  <option id="family" value="family">Family</option>
+						</select> 
 					<input type="submit" id="name-submit" value="Grab">
 					<div id="show-answer"></div>	
 

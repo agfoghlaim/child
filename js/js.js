@@ -34,11 +34,12 @@ jQuery(document).ready(function($){
 
 
 	$('input#name-submit').on('click', function(){
-		var arrive = $('#arrive').val(); alert(arrive);
+		var room = $('#roomtype').val();//alert(room);
+		var arrive = $('#arrive').val();// alert(arrive);
 		var depart = $('#depart').val();
 		//var name = $('input#name').val();
 		if($.trim(arrive) != ''){
-			$.post(ajaxurl , {action:'checkavail_m',arrive:arrive, depart:depart }, function(data){
+			$.post(ajaxurl , {action:'checkavail_m',arrive:arrive, depart:depart, room:room }, function(data){
 				$('#show-answer').html(data);
 				//alert(data);
 				});

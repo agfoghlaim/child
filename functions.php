@@ -16,7 +16,7 @@ function my_theme_enqueue_styles() {
 
 }
 
-
+add_theme_support( 'post-thumbnails' ); 
 //add_action('wp_enqueue_script' );
 add_action( 'wp_enqueue_scripts', 'divi_child_scripts');
  function divi_child_scripts(){
@@ -56,15 +56,17 @@ function check_avail(){
 	if (isset($_POST['arrive'])){
   	$arrive = $_POST['arrive'];
   	$depart = $_POST['depart'];
+    $room = $_POST['room'];
 
-      $thequery = "SELECT DISTINCT rm_no, description, amount 
+      $thequery = "SELECT DISTINCT rm_no, description, amount, post_id_wp 
            from bookings, room_type, rooms
                 where bookings.rm_no = rooms.rm_id 
                 and rooms.rm_type = room_type.rm_type_id
                 and rm_no not in(
                   select rm_no from bookings 
                   where booking_date < '$depart'
-                          AND checkout > '$arrive')";
+                          AND checkout > '$arrive'
+                          )AND description = '$room'";
 //$sql = "SELECT rm_no from bookings";
 //$myrows = $wpdb->get_results( $thequery );
 $seconddb = new wpdb('root', '', 'bandb', 'localhost');
@@ -72,11 +74,21 @@ $seconddb = new wpdb('root', '', 'bandb', 'localhost');
     if($avail_rooms){
       foreach($avail_rooms as $avail_room)
       {
-		    echo $avail_room->rm_no;
-		    echo $avail_room->description;
+        $post_id = $avail_room->post_id_wp;
+        $queried_post = get_post($post_id);
+        $title = $queried_post->post_title;
+      echo " <p>  " .$title." ";
+      echo $queried_post->post_content;
+      echo $queried_post->post_thumbnail."</p>";
+      //echo the_post_thumbnail();
+
+		    echo "<p>". $avail_room->rm_no."</p>";
+		    echo "<p>".$avail_room->description."</p>";
         //wp_die(); 
       }	
-    }
+    }else{
+        echo "<p>No Availabity for these dates.</p>";
+      }
   }
 }
 //end check_avail fuction
