@@ -1,6 +1,6 @@
 <?php
 session_start();
-echo session_id();
+//echo session_id();
 get_header();
 
 
@@ -112,6 +112,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 												<form action="<?php echo get_permalink(); ?>" id="theForm"
 												 method="post">
 													<p><?php echo "<h3>Book room " . $the_room->rm_no . "</h3>"; ?></p>
+													<p><input type="hidden" name ="roomNo" value="<?php echo $the_room->rm_no; ?>"></p>
 													<p>First Name: <input type="text" name="fname" size="15" maxlength="20" value="<?php if (isset($_POST['fname'])) echo $_POST['fname']; ?>" /></p>
 													<p>Last Name: <input type="text" name="lname" size="15" maxlength="40" value="<?php if (isset($_POST['name'])) echo $_POST['lname']; ?>" /></p>
 													<p>Email: <input type="text" name="email" size="20" maxlength="60" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>"  /> </p>
@@ -122,7 +123,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 													<p>Number of Adults: <input type="number" name="no_adults" max="4" value="<?php if (isset($_POST['no_adults'])) echo $_POST['no_adults']; ?>"  /> </p>
 													<p>Number of Children: <input type="number" name="no_children" max="4" value="<?php if (isset($_POST['no_children'])) echo $_POST['no_children']; ?>"  /> </p>
 													<p>Arrival Time: <input type="time" name="arrival"value="<?php if (isset($_POST['arrival'])) echo $_POST['arrival']; ?>"  /> </p>
-													<p><input type="submit"  value="Register" /></p>
+													<p><input type="submit" name="submitInfo"  value="Register" /></p>
 												</form>
 											</div>
 										 </td></tr>
@@ -135,8 +136,14 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 
 
 
-
-
+				 					if (isset($_POST['submitInfo'])){
+				 	$_SESSION['room'] = $_POST['roomNo'] ;
+				 	echo "<h1>SESSION[room] is : " . $_SESSION['room'] . "</h1>";
+				 	echo "<h1>post[room] is : " . $_POST['roomNo'] . "</h1>";
+					
+				 }
+									$roomNo = $_POST['roomNo'];
+									echo $roomNo."zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
 									$fn=$_POST['fname'];
 									$ln=$_POST['lname'];
 									$em=$_POST['email'];
@@ -148,6 +155,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 									$children =$_POST['no_children'];
 									$arrival=$_POST['arrival'];
 					}
+					echo "<h1>this is the relevent room no: " .$roomNo . "</h1>";
 
 					if(isset($_SESSION['in'])){
     $in = $_SESSION['in'];
@@ -172,12 +180,7 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 					//$x = "SELECT mysql_insert_id('$book')";
 				
 					$r = $seconddb->query($q);
-					//$what = $seconddb->query($x);
-					//echo "<h1>last id is " . $what . "</h1>";
-					//$book_query = $seconddb->query($book);
-					//$lastid = $seconddb->query($last);
-					 // echo '<h1> last id is: ' . $lastid . '</h1>';
-						//check the query ran ok
+			
 						if ($r) {
 						//printf ("New Record has id %d.\n", $seconddb->insert_id);	
 							echo '<h1>Thank you!</h1>
@@ -193,8 +196,10 @@ $is_page_builder_used = et_pb_is_pagebuilder_used( get_the_ID() );
 					echo  $_SESSION['out'];
 					var_dump($_SESSION);
 							//insert booking 
-							$book_query = "INSERT INTO bookings(guestID,booking_date, checkout, rm_no)
-    						VALUES('$guest','$in', '$out', '101'); ";
+							//$book_query = "INSERT INTO bookings(guestID,booking_date, checkout)
+    						//VALUES('$guest','$in', '$out'); ";
+    						$book_query = "INSERT INTO bookings(guestID,booking_date, checkout, rm_no)
+    						VALUES('$guest','$in', '$out', '$roomNo'); ";
     						$booking = $seconddb->query($book_query);
     						 //echo "<pre>";
 				     //print_r($booking);

@@ -17,6 +17,13 @@ function my_theme_enqueue_styles() {
 }
 
 
+//add_action('wp_enqueue_script' );
+add_action( 'wp_enqueue_scripts', 'divi_child_scripts');
+ function divi_child_scripts(){
+  wp_enqueue_script('js', get_stylesheet_directory_uri() . '/js/js.js');
+  wp_enqueue_script('jquery');
+ }
+
 
 function seconddb(){
 	global $seconddb;
@@ -27,14 +34,87 @@ add_action('init', 'seconddb');
 
 /*add jquery ui*/
 
-//add_action('wp_enqueue_script' );
 
- function divi_child_scripts(){
- 	wp_enqueue_script('js', get_stylesheet_directory_uri() . '/js/js.js');
- 	wp_enqueue_script('jquery');
+
+
+
+
+ function divi_child_moh_widget(){
+ 	wp_enqueue_script('js', 'http://localhost/wordpress/wp-content/plugins/moh-check-avail/js/global.js');
+ 	//wp_enqueue_script('global');
  }
 
 
 
-add_action( 'wp_enqueue_scripts', 'divi_child_scripts');
+add_action( 'wp_enqueue_scripts', 'divi_child_moh_widget');
+
+/*start of ajax*/
+add_action('wp_ajax_checkavail_m', 'check_avail');
+add_action('wp_ajax_nopriv_checkavail_m', 'check_avail');
+
+function check_avail(){
+	if (isset($_POST['arrive'])){
+  	$arrive = $_POST['arrive'];
+  	$depart = $_POST['depart'];
+
+      $thequery = "SELECT DISTINCT rm_no, description, amount 
+           from bookings, room_type, rooms
+                where bookings.rm_no = rooms.rm_id 
+                and rooms.rm_type = room_type.rm_type_id
+                and rm_no not in(
+                  select rm_no from bookings 
+                  where booking_date < '$depart'
+                          AND checkout > '$arrive')";
+//$sql = "SELECT rm_no from bookings";
+//$myrows = $wpdb->get_results( $thequery );
+$seconddb = new wpdb('root', '', 'bandb', 'localhost');
+    $avail_rooms = $seconddb->get_results($thequery);
+    if($avail_rooms){
+      foreach($avail_rooms as $avail_room)
+      {
+		    echo $avail_room->rm_no;
+		    echo $avail_room->description;
+        //wp_die(); 
+      }	
+    }
+  }
+}
+//end check_avail fuction
+
+
+/*end of ajax*/
+
+/*start of moreajax*/
+add_action('wp_ajax_check_the_avail', 'check_availabity');
+add_action('wp_ajax_nopriv_check_the_avail', 'check_availabity');
+
+function check_availabity(){
+  if (isset($_POST['arrivalDate'])){
+    $arrivalDate = $_POST['arrivalDate'];
+    $departureDate = $_POST['departureDate'];
+
+  $the_query = "SELECT DISTINCT rm_no, description, amount 
+           FROM bookings, room_type, rooms
+                WHERE bookings.rm_no = rooms.rm_id 
+                AND rooms.rm_type = room_type.rm_type_id
+                AND rm_no not IN(
+                  SELECT rm_no FROM bookings 
+                  AND booking_date < '$departureDate'
+                  AND checkout > '$arrivalDate')";
+
+  $available_rooms = $seconddb->get_results($the_query);
+
+    if($available_rooms){
+
+      foreach($available_rooms as $available_room)
+      {
+        echo $available_room->rm_no;
+        echo $available_room->description;
+      } 
+    }
+
+
+  }
+
+}
 ?>

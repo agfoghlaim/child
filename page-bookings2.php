@@ -49,37 +49,42 @@ include "connect.php";
 
 					if(isset($_POST['submit'] )){
 
-					$_SESSION['in'] = $_POST['date'];
-					$_SESSION['out'] = $_POST['dateOut'];
+					// $_SESSION['in'] = $_POST['date'];
+					// $_SESSION['out'] = $_POST['dateOut'];
 
-					if(isset($_SESSION['in'])){
+					// if(isset($_SESSION['in'])){
   
-					$in = $_SESSION['in'];
-					$out = $_SESSION['out'];
-					echo $_SESSION['in'];
-					echo $_SESSION['out'];
-					echo $in;
-					echo $out;
-					}  	
+					// $in = $_SESSION['in'];
+					// $out = $_SESSION['out'];
+					// echo $_SESSION['in'];
+					// echo $_SESSION['out'];
+					// echo $in;
+					// echo $out;
+					// }  	
 					
 
-					$sql = "SELECT DISTINCT rm_no, description, amount 
-					 		from bookings, room_type, rooms
-				    		where bookings.rm_no = rooms.rm_id 
-				    		and rooms.rm_type = room_type.rm_type_id
-				    		and rm_no not in(
-				    			select rm_no from bookings 
-				    			where booking_date < '$out'
-                   				AND checkout > '$in')";
+					// $sql = "SELECT DISTINCT rm_no, description, amount 
+					//  		from bookings, room_type, rooms
+				 //    		where bookings.rm_no = rooms.rm_id 
+				 //    		and rooms.rm_type = room_type.rm_type_id
+				 //    		and rm_no not in(
+				 //    			select rm_no from bookings 
+				 //    			where booking_date < '$out'
+     //               				AND checkout > '$in')";
+					
+					$sql = "SELECT rm_no 
+					 		FROM bookings;";
 							
 
-					$the_rooms = $seconddb->get_results($sql);
+					$the_rooms = $seconddb->query($sql);
 					if($the_rooms){
-						echo "<p>".$the_room->rm_no."</p>";
-						echo "<p>".$the_room->description."</p>";
-						echo "<p>".$the_room->amount."</p>";
-					}}
-						//echo "<p>f</p>";
+						echo "<p>".$the_rooms->rm_no."</p>";
+						echo"what";
+						//echo "<p>".$the_room->description."</p>";
+						//echo "<p>".$the_room->amount."</p>";
+					//}
+				}else{echo"adfadf";}
+				}		//echo "<p>f</p>";
 				?>
 
 				<!-- ============================end of booking system PHP ====================== -->
